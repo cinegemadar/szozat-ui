@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="row">
       <letter-input v-for="(letter, index) in word" :wordIdx="wordIdx" :letterIdx="index" :key="uniIndex(index)"/>
   </div>
 </template>
@@ -28,5 +28,8 @@ export default {
 </script>
 
 <style>
-
+.row {
+    display: flexbox;
+    justify-content: space-between;
+}
 </style>

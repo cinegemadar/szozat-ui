@@ -49,11 +49,19 @@ export default createStore({
     }
   },
   actions: {
-    nextWord({ commit }, repr){
+    nextWord({ commit, state }, repr){
       function addColorInfo(word) { 
         // create [{letter0, white},{letter1, color}] from ["letter0", "letter2"]
         let result = []
-        for(const letter of word.split(",")) {
+        for(const [index, letter] of word.split(",").entries()) {
+          // if(state.words.filter( 
+          //   w => (w[index].value == letter && w[index].color=="green")).length){
+          //   result.push({value: letter, color: "green"})
+          // }
+          // else {
+          //   result.push({value: letter, color: "white"})
+            
+          // }
           result.push({value: letter, color: "white"})
         }
         return result
@@ -62,18 +70,7 @@ export default createStore({
         if(data.length < 0) { return }
         commit("addWord", addColorInfo(data[0]))
       }
-     
-      // const testData = [
-      //   ["m", 3, "ó", 3, "d", 3, "u", 2, "s", 3],
-      //   ["u", 2, "n", 2, "sz", 3, "o", 3, "l", 3],
-      //   ["f", 3, "u", 1, "t", 3, "n", 2, "i", 3],
-      //   ["cs", 3, "u", 1, "p", 3, "á", 3, "n", 2]
-      //  ]
-      // const testData = [
-      //   [
-      //     ["","","",""]
-      //    ]
-      // ]
+    
       axios.post("https://szozat-wordle-solver.herokuapp.com/guess/", repr).then(
       // axios.post("http://127.0.0.1:8000/guess/", repr).then(
         response => processResponse(response.data))
@@ -112,7 +109,6 @@ export default createStore({
         return wordAsList
       }
       let repr = []
-      console.log("WORDS:", state.words)
       for (var i = 0; i < state.words.length; i++) {
         repr.push(getWordAsList(i))
       }

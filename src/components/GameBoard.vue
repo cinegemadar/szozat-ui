@@ -1,6 +1,17 @@
 <template>
+<div class="board">
+  <div>
+      <h1>Szózat megoldó</h1>
+      <ul>
+          <li>A megjelenő szót pötyögd be a szózat weboldalán</li>
+          <li>A betűket nyomogatva színezd a megfelelő színre</li>
+          <li>A send gomb megnyomásával kapod a következő tippet</li>
+      </ul>
+
+  </div>
   <word-row v-for="(_, index) in words" :key="index" :wordIdx="index" />
-  <button class="send" @click="click">Send</button>
+  <button class="send" @click="click" >Send</button>
+</div>
 </template>
 
 <script>
@@ -20,6 +31,9 @@ export default {
     },
     components: {
         WordRow
+    },
+    created: () => {
+        store.dispatch("nextWord", store.getters.getJSONRepresentationOfWords)
     }
 }
 </script>
@@ -27,6 +41,15 @@ export default {
 <style>
 word-row {
     display: block;
+}
+.send {
+    background-color: darkgray;
+    max-width: 100%;
+    margin-top: 5%;
+}
+.board {
+    background-color: azure;
+    width: 75%;
 }
 
 </style>
