@@ -1,5 +1,5 @@
 <template>
-    <button :class="cssClass" @click="click">{{ value }}</button>
+    <button :class="cssClass" @click="click">{{ value.toUpperCase() }}</button>
 </template>
 
 <script>
