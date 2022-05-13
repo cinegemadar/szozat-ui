@@ -21,7 +21,6 @@ export default {
     {
         click() {
             store.dispatch("toggleColor", {wordIdx: this.wordIdx, letterIdx: this.letterIdx})
-            console.log(this.value)
         }
     }
 }

@@ -6,34 +6,35 @@ export default createStore({
   state: {
     test_words: [
       [
-        { value: "E", color: "white" },
+        { value: "E", color: "grey" },
         { value: "L", color: "grey" },
         { value: "S", color: "yellow" },
         { value: "O", color: "green" },
-        { value: "O", color: "white" }
+        { value: "O", color: "grey" }
       ],
       [
-        { value: "M", color: "white" },
+        { value: "M", color: "grey" },
         { value: "A", color: "grey" },
         { value: "S", color: "yellow" },
         { value: "O", color: "green" },
-        { value: "D", color: "white" }
+        { value: "D", color: "grey" }
       ],
       [
-        { value: "H", color: "white" },
+        { value: "H", color: "grey" },
         { value: "A", color: "grey" },
         { value: "R", color: "yellow" },
         { value: "M", color: "green" },
-        { value: "A", color: "white" }
+        { value: "A", color: "grey" }
       ],
       [
-        { value: "N", color: "white" },
+        { value: "N", color: "grey" },
         { value: "E", color: "grey" },
         { value: "GY", color: "yellow" },
         { value: "E", color: "green" },
-        { value: "D", color: "white" }
+        { value: "D", color: "grey" }
       ]
     ],
+    pattern: ["grey", "grey", "grey", "grey", "grey"],
     words: [[]],
     activeWord: 1
   },
@@ -46,6 +47,9 @@ export default createStore({
     },
     changeColor(state, param) {
       state.words[param.wordIdx][param.letterIdx].color = param.color
+    },
+    changePattern(state, param) {
+      state.pattern[param.idx] = param.color
     }
   },
   actions: {
@@ -54,15 +58,13 @@ export default createStore({
         // create [{letter0, white},{letter1, color}] from ["letter0", "letter2"]
         let result = []
         for(const [index, letter] of word.split(",").entries()) {
-          // if(state.words.filter( 
-          //   w => (w[index].value == letter && w[index].color=="green")).length){
-          //   result.push({value: letter, color: "green"})
-          // }
-          // else {
-          //   result.push({value: letter, color: "white"})
-            
-          // }
-          result.push({value: letter, color: "white"})
+          console.log(state.pattern)
+          if(state.pattern[index] == "green") {
+            result.push({value: letter, color: "green"})
+          }
+          else {
+            result.push({value: letter, color: "grey"})
+          }
         }
         return result
       }
@@ -76,13 +78,17 @@ export default createStore({
         response => processResponse(response.data))
     },
     toggleColor({ commit, state }, param) {
-      const COLORS = ["white", "grey", "yellow", "green"]
+      const COLORS = ["grey", "yellow", "green"]
       const currentIDX = COLORS.indexOf(state.words[param.wordIdx][param.letterIdx].color)
       const nextColor = COLORS[(currentIDX + 1 % COLORS.length) % COLORS.length]
 
       commit("changeColor", {
         wordIdx: param.wordIdx,
         letterIdx: param.letterIdx,
+        color: nextColor
+      })
+      commit("changePattern", {
+        idx: param.letterIdx,
         color: nextColor
       })
     }
